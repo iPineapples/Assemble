@@ -1,0 +1,5 @@
+C:\Git\Assemble\Project\.mono\temp\bin\Tools\Assemble Alpha.dll
+C:\Git\Assemble\Project\.mono\temp\bin\Tools\Assemble Alpha.pdb
+C:\Git\Assemble\Project\.mono\temp\obj\Tools\Assemble Alpha.csprojAssemblyReference.cache
+C:\Git\Assemble\Project\.mono\temp\obj\Tools\Assemble Alpha.dll
+C:\Git\Assemble\Project\.mono\temp\obj\Tools\Assemble Alpha.pdb
