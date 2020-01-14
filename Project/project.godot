@@ -19,6 +19,15 @@ config/name="Assemble Alpha"
 run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=256
+window/size/height=224
+window/size/test_width=768
+window/size/test_height=672
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
