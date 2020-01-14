@@ -1,0 +1,62 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Sprites/Player/idle_01.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/Player/idle_02.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Player/idle_03.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/Player/idle_04.png" type="Texture" id=4]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "idle",
+"speed": 3.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 8 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "idle"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("animations:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "idle" ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=6]
+animation = "idle"
+
+[sub_resource type="AnimationNodeStateMachine" id=3]
+states/idle/node = SubResource( 6 )
+states/idle/position = Vector2( 338, 147 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=4]
+
+[node name="Player" type="Node2D"]
+
+[node name="body" type="KinematicBody2D" parent="."]
+
+[node name="animations" type="AnimatedSprite" parent="body"]
+frames = SubResource( 1 )
+animation = "idle"
+
+[node name="shape" type="CollisionShape2D" parent="body"]
+shape = SubResource( 2 )
+
+[node name="animPlayer" type="AnimationPlayer" parent="body"]
+anims/idle = SubResource( 5 )
+
+[node name="animTree" type="AnimationTree" parent="body"]
+tree_root = SubResource( 3 )
+anim_player = NodePath("../animPlayer")
+active = true
+parameters/playback = SubResource( 4 )
