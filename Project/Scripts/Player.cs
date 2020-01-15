@@ -24,8 +24,9 @@ public class Player : Node2D {
 
     public override void _PhysicsProcess(float delta) {
         // debug terminal commands.
-        GD.Print(motion);
-
+        //GD.Print(motion);
+        //GD.Print(Main.playerPos);
+        
         // call basic methods.
         GetInput();
         Move();
@@ -44,6 +45,9 @@ public class Player : Node2D {
             keyPressed = "both";
         }
 
+        // update Main Script with player's current position.
+        Main.playerPos = Main.playerBodyNode.Position; 
+
     }
 
 
@@ -58,22 +62,17 @@ public class Player : Node2D {
         // switch the keys pressed and modify the motion to be applied.
         switch (keyPressed) {
             case ("right"):
-                GD.Print("MOVING RIGHT");
                 // flips the image.
                 Main.playerSpriteNode.FlipH = false;
                 // changes motion so it moves to the right.
-                if (!Main.playerBodyNode.IsOnFloor()) { 
-                    motion.x = Mathf.Lerp(motion.x, speed, slippery); 
-                    }
+                motion.x = Mathf.Lerp(motion.x, speed, slippery); 
                 break;
 
             case ("left"):
                 // flips the image.
                 Main.playerSpriteNode.FlipH = true;
                 // changes motion so it moves to the left.
-                if (!Main.playerBodyNode.IsOnFloor()) { 
-                    motion.x = Mathf.Lerp(motion.x, -speed, slippery); 
-                    }
+                motion.x = Mathf.Lerp(motion.x, -speed, slippery);
                 break;
             // case nor right or left key is pressed.
             case ("nil"):   

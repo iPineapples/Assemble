@@ -62,3 +62,18 @@ tree_root = SubResource( 5 )
 anim_player = NodePath("../animPlayer")
 active = true
 parameters/playback = SubResource( 6 )
+
+[node name="player_camera" type="Camera2D" parent="body"]
+offset = Vector2( 0.656, 0.64 )
+current = true
+limit_left = 0
+limit_top = 0
+limit_bottom = 224
+limit_smoothed = true
+drag_margin_v_enabled = false
+drag_margin_left = 0.4
+drag_margin_top = 0.0
+drag_margin_right = 0.4
+drag_margin_bottom = 0.0
+editor_draw_limits = true
+editor_draw_drag_margin = true

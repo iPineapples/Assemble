@@ -8,6 +8,10 @@
 script = ExtResource( 1 )
 
 [node name="Display" type="Node2D" parent="."]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="parallax_bg" type="ParallaxBackground" parent="Display"]
 
@@ -22,3 +26,4 @@ centered = false
 [node name="Objects" type="Node2D" parent="."]
 
 [node name="Player" parent="Objects" instance=ExtResource( 3 )]
+position = Vector2( 128, 112 )
