@@ -19,7 +19,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "idle"
 length = 2.0
 tracks/0/type = "value"
@@ -35,14 +35,14 @@ tracks/0/keys = {
 "values": [ "idle" ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=4]
+[sub_resource type="AnimationNodeAnimation" id=3]
 animation = "idle"
 
-[sub_resource type="AnimationNodeStateMachine" id=5]
-states/idle/node = SubResource( 4 )
+[sub_resource type="AnimationNodeStateMachine" id=4]
+states/idle/node = SubResource( 3 )
 states/idle/position = Vector2( 338, 147 )
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=6]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=5]
 
 [node name="Player" type="Node2D"]
 script = ExtResource( 1 )
@@ -54,13 +54,13 @@ frames = SubResource( 1 )
 animation = "idle"
 
 [node name="animPlayer" type="AnimationPlayer" parent="body"]
-anims/idle = SubResource( 3 )
+anims/idle = SubResource( 2 )
 
 [node name="animTree" type="AnimationTree" parent="body"]
-tree_root = SubResource( 5 )
+tree_root = SubResource( 4 )
 anim_player = NodePath("../animPlayer")
 active = true
-parameters/playback = SubResource( 6 )
+parameters/playback = SubResource( 5 )
 
 [node name="playerCam" type="Camera2D" parent="body"]
 visible = false
@@ -70,7 +70,6 @@ limit_left = 0
 limit_top = 0
 limit_bottom = 224
 limit_smoothed = true
-drag_margin_v_enabled = false
 drag_margin_left = 0.4
 drag_margin_top = 0.0
 drag_margin_right = 0.4
