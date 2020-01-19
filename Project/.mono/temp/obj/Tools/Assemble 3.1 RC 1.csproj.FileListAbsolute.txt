@@ -1,0 +1,5 @@
+C:\Git\Assemble RC\Project\.mono\temp\bin\Tools\Assemble 3.1 RC 1.dll
+C:\Git\Assemble RC\Project\.mono\temp\bin\Tools\Assemble 3.1 RC 1.pdb
+C:\Git\Assemble RC\Project\.mono\temp\obj\Tools\Assemble 3.1 RC 1.csprojAssemblyReference.cache
+C:\Git\Assemble RC\Project\.mono\temp\obj\Tools\Assemble 3.1 RC 1.dll
+C:\Git\Assemble RC\Project\.mono\temp\obj\Tools\Assemble 3.1 RC 1.pdb

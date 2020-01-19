@@ -3,7 +3,7 @@ using System.Reflection;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("Assemble Alpha")]
+[assembly: AssemblyTitle("Assemble 3.1 RC 1")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
