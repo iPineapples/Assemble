@@ -11528,6 +11528,7 @@
                 config.save("user://settings.cfg")
             </code></para>
             <para>Keep in mind that section and property names can't contain spaces. Anything after a space will be ignored on save and on load.</para>
+            <para>ConfigFiles can also contain manually written comment lines starting with a semicolon (<c>;</c>). Those lines will be ignored when parsing the file. Note that comments will be lost when saving the ConfigFile. This can still be useful for dedicated server configuration files, which are typically never overwritten without explicit user action.</para>
             </summary>
         </member>
         <member name="M:Godot.ConfigFile.SetValue(System.String,System.String,System.Object)">
@@ -15080,8 +15081,9 @@
         </member>
         <member name="T:Godot.GraphNode">
             <summary>
-            <para>A GraphNode is a container defined by a title. It can have one or more input and output slots, which can be enabled (shown) or disabled (not shown) and have different (incompatible) types. Colors can also be assigned to slots. A tuple of input and output slots is defined for each GUI element included in the GraphNode. Input and output connections are left and right slots, but only enabled slots are counted as connections.</para>
-            <para>To add a slot to GraphNode, add any <see cref="T:Godot.Control"/>-derived child node to it.</para>
+            <para>A GraphNode is a container. Each GraphNode can have several input and output slots, sometimes refered to as ports, allowing connections between GraphNodes. To add a slot to GraphNode, add any <see cref="T:Godot.Control"/>-derived child node to it. </para>
+            <para>After adding at least one child to GraphNode new sections will be automatically created in the Inspector called 'Slot'. When 'Slot' is expanded you will see list with index number for each slot. You can click on each of them to expand further.  </para>
+            <para>In the Inspector you can enable (show) or disable (hide) slots. By default all slots are disabled so you may not see any slots on your GraphNode initially. You can assign a type to each slot. Only slots of the same type will be able to connect to each other. You can also assign colors to slots. A tuple of input and output slots is defined for each GUI element included in the GraphNode. Input connections are on the left and output connections are on the right side of GraphNode. Only enabled slots are counted as connections.</para>
             </summary>
         </member>
         <member name="F:Godot.GraphNode.OverlayEnum.Disabled">
@@ -15113,13 +15115,13 @@
         <member name="P:Godot.GraphNode.ShowClose">
             <summary>
             <para>If <c>true</c>, the close button will be visible.</para>
-            <para>Note: Pressing it will only trigger the <c>close_request</c> signal, the GraphNode needs to be removed manually.</para>
+            <para>Note: Pressing it will only emit the <c>close_request</c> signal, the GraphNode needs to be removed manually.</para>
             </summary>
         </member>
         <member name="P:Godot.GraphNode.Resizable">
             <summary>
             <para>If <c>true</c>, the user can resize the GraphNode.</para>
-            <para>Note: Dragging the handle will only trigger the <c>resize_request</c> signal, the GraphNode needs to be resized manually.</para>
+            <para>Note: Dragging the handle will only emit the <c>resize_request</c> signal, the GraphNode needs to be resized manually.</para>
             </summary>
         </member>
         <member name="P:Godot.GraphNode.Selected">
@@ -18402,7 +18404,7 @@
         </member>
         <member name="P:Godot.KinematicCollision.Position">
             <summary>
-            <para>The point of collision.</para>
+            <para>The point of collision, in global coordinates.</para>
             </summary>
         </member>
         <member name="P:Godot.KinematicCollision.Normal">
@@ -18463,7 +18465,7 @@
         </member>
         <member name="P:Godot.KinematicCollision2D.Position">
             <summary>
-            <para>The point of collision.</para>
+            <para>The point of collision, in global coordinates.</para>
             </summary>
         </member>
         <member name="P:Godot.KinematicCollision2D.Normal">
@@ -19179,7 +19181,7 @@
         </member>
         <member name="T:Godot.LineEdit">
             <summary>
-            <para>LineEdit provides a single-line string editor, used for text fields. It features many built-in shortcuts which will always be available:</para>
+            <para>LineEdit provides a single-line string editor, used for text fields. It features many built-in shortcuts which will always be available: (the Ctrl here maps to Command on macOS)</para>
             <para>- Ctrl + C: Copy</para>
             <para>- Ctrl + X: Cut</para>
             <para>- Ctrl + V or Ctrl + Y: Paste/"yank"</para>
@@ -19189,6 +19191,15 @@
             <para>- Ctrl + K: Delete text from the cursor position to the end of the line</para>
             <para>- Ctrl + A: Select all text</para>
             <para>- Up/Down arrow: Move the cursor to the beginning/end of the line</para>
+            <para>On macOS, some extra keyboard shortcuts are available:</para>
+            <para>- Ctrl + F: Like the right arrow key, move the cursor one character right</para>
+            <para>- Ctrl + B: Like the left arrow key, move the cursor one character left</para>
+            <para>- Ctrl + P: Like the up arrow key, move the cursor to the previous line</para>
+            <para>- Ctrl + N: Like the down arrow key, move the cursor to the next line</para>
+            <para>- Ctrl + D: Like the Delete key, delete the character on the right side of cursor</para>
+            <para>- Ctrl + H: Like the Backspace key, delete the character on the left side of the cursor</para>
+            <para>- Command + Left arrow: Like the Home key, move the cursor to the beginning of the line</para>
+            <para>- Command + Right arrow: Like the End key, move the cursor to the end of the line</para>
             </summary>
         </member>
         <member name="F:Godot.LineEdit.AlignEnum.Left">
@@ -19255,6 +19266,7 @@
         <member name="P:Godot.LineEdit.Text">
             <summary>
             <para>String value of the <see cref="T:Godot.LineEdit"/>.</para>
+            <para>Note: Changing text using this property won't emit the <c>text_changed</c> signal.</para>
             </summary>
         </member>
         <member name="P:Godot.LineEdit.Align">
@@ -19664,7 +19676,8 @@
         </member>
         <member name="T:Godot.MenuButton">
             <summary>
-            <para>Special button that brings up a <see cref="T:Godot.PopupMenu"/> when clicked. That's pretty much all it does, as it's just a helper class when building GUIs.</para>
+            <para>Special button that brings up a <see cref="T:Godot.PopupMenu"/> when clicked. </para>
+            <para>New items can be created inside this <see cref="T:Godot.PopupMenu"/> using <c>get_popup().add_item("My Item Name")</c>. You can also create them directly from the editor. To do so, select the MenuButton node, then in the toolbar at the top of the 2D editor, click Items then click Add in the popup. You will be able to give each items new properties.</para>
             </summary>
         </member>
         <member name="P:Godot.MenuButton.SwitchOnHover">
@@ -21680,6 +21693,12 @@
         <member name="T:Godot.PacketPeer">
             <summary>
             <para>PacketPeer is an abstraction and base class for packet-based protocols (such as UDP). It provides an API for sending and receiving packets both as raw data or variables. This makes it easy to transfer data over a protocol, without having to encode data as low-level bytes or having to worry about network ordering.</para>
+            </summary>
+        </member>
+        <member name="P:Godot.PacketPeer.EncodeBufferMaxSize">
+            <summary>
+            <para>Maximum buffer size allowed when encoding <c>Variant</c>s. Raise this value to support heavier memory allocations.</para>
+            <para>The <see cref="M:Godot.PacketPeer.PutVar(System.Object,System.Boolean)"/> method allocates memory on the stack, and the buffer used will grow automatically to the closest power of two to match the size of the <c>Variant</c>. If the <c>Variant</c> is bigger than <c>encode_buffer_max_size</c>, the method will error out with .</para>
             </summary>
         </member>
         <member name="P:Godot.PacketPeer.AllowObjectDecoding">
@@ -32707,6 +32726,7 @@
         <member name="P:Godot.Timer.Autostart">
             <summary>
             <para>If <c>true</c>, the timer will automatically start when entering the scene tree.</para>
+            <para>Note: This property is automatically set to <c>false</c> after the timer enters the scene tree and starts.</para>
             </summary>
         </member>
         <member name="P:Godot.Timer.Paused">
@@ -34319,22 +34339,24 @@
         </member>
         <member name="M:Godot.VideoPlayer.Play">
             <summary>
-            <para>Starts the video playback.</para>
+            <para>Starts the video playback from the beginning. If the video is paused, this will not unpause the video.</para>
             </summary>
         </member>
         <member name="M:Godot.VideoPlayer.Stop">
             <summary>
-            <para>Stops the video playback.</para>
+            <para>Stops the video playback and sets the stream position to 0.</para>
+            <para>Note: Although the stream position will be set to 0, the first frame of the video stream won't become the current frame.</para>
             </summary>
         </member>
         <member name="M:Godot.VideoPlayer.IsPlaying">
             <summary>
             <para>Returns <c>true</c> if the video is playing.</para>
+            <para>Note: The video is still considered playing if paused during playback.</para>
             </summary>
         </member>
         <member name="M:Godot.VideoPlayer.GetStreamName">
             <summary>
-            <para>Returns the video stream's name.</para>
+            <para>Returns the video stream's name, or <c>"&lt;No Stream&gt;"</c> if no video stream is assigned.</para>
             </summary>
         </member>
         <member name="M:Godot.VideoPlayer.GetVideoTexture">
