@@ -1,66 +1,60 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/Player.cs" type="Script" id=1]
 [ext_resource path="res://Sprites/Player/idle_01.png" type="Texture" id=2]
 [ext_resource path="res://Sprites/Player/idle_02.png" type="Texture" id=3]
 [ext_resource path="res://Sprites/Player/idle_03.png" type="Texture" id=4]
 [ext_resource path="res://Sprites/Player/idle_04.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/Player/jump_01.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/Player/wake_02.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/Player/wake_04.png" type="Texture" id=10]
+[ext_resource path="res://Sprites/Player/wake_01.png" type="Texture" id=11]
+[ext_resource path="res://Sprites/Player/walk_01.png" type="Texture" id=12]
+[ext_resource path="res://Sprites/Player/wake_03.png" type="Texture" id=13]
+[ext_resource path="res://Sprites/Player/walk_02.png" type="Texture" id=14]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ],
 "loop": true,
 "name": "idle",
+"speed": 0.6
+}, {
+"frames": [ ExtResource( 9 ), ExtResource( 9 ), ExtResource( 13 ), ExtResource( 13 ), ExtResource( 10 ), ExtResource( 10 ), ExtResource( 10 ) ],
+"loop": false,
+"name": "wake",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": false,
+"name": "jump",
 "speed": 3.0
 }, {
-"frames": [  ],
+"frames": [ ExtResource( 12 ), ExtResource( 2 ), ExtResource( 14 ) ],
 "loop": true,
 "name": "walk",
-"speed": 5.0
+"speed": 6.0
+}, {
+"frames": [ ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "block",
+"speed": 0.5
 } ]
-
-[sub_resource type="Animation" id=2]
-resource_name = "idle"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "idle" ]
-}
-
-[sub_resource type="AnimationNodeAnimation" id=3]
-animation = "idle"
-
-[sub_resource type="AnimationNodeStateMachine" id=4]
-states/idle/node = SubResource( 3 )
-states/idle/position = Vector2( 338, 147 )
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=5]
 
 [node name="Player" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="body" type="KinematicBody2D" parent="."]
 
+[node name="playerShape" type="CollisionPolygon2D" parent="body"]
+visible = false
+polygon = PoolVector2Array( -7.935, -5, -5, -7.9, 5, -7.9, 7.935, -5, 7.935, 6, 5, 8, -5, 8, -7.935, 6 )
+
 [node name="sprite" type="AnimatedSprite" parent="body"]
 frames = SubResource( 1 )
-animation = "idle"
-
-[node name="animPlayer" type="AnimationPlayer" parent="body"]
-anims/idle = SubResource( 2 )
-
-[node name="animTree" type="AnimationTree" parent="body"]
-tree_root = SubResource( 4 )
-anim_player = NodePath("../animPlayer")
-active = true
-parameters/playback = SubResource( 5 )
+animation = "wake"
+frame = 6
+playing = true
 
 [node name="playerCam" type="Camera2D" parent="body"]
 visible = false
@@ -76,6 +70,3 @@ drag_margin_right = 0.4
 drag_margin_bottom = 0.0
 editor_draw_limits = true
 editor_draw_drag_margin = true
-
-[node name="playerShape" type="CollisionPolygon2D" parent="body"]
-polygon = PoolVector2Array( -7.935, -5, -5, -7.9, 5, -7.9, 7.935, -5, 7.935, 6, 5, 8, -5, 8, -7.935, 6 )

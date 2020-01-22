@@ -1,0 +1,6 @@
+/home/mateus/Documents/Git/Assemble/Project/.mono/temp/bin/Tools/Assemble-v0.1-alpha.2.dll
+/home/mateus/Documents/Git/Assemble/Project/.mono/temp/bin/Tools/Assemble-v0.1-alpha.2.pdb
+/home/mateus/Documents/Git/Assemble/Project/.mono/temp/obj/Tools/Assemble-v0.1-alpha.2.csprojAssemblyReference.cache
+/home/mateus/Documents/Git/Assemble/Project/.mono/temp/obj/Tools/Assemble-v0.1-alpha.2.csproj.CoreCompileInputs.cache
+/home/mateus/Documents/Git/Assemble/Project/.mono/temp/obj/Tools/Assemble-v0.1-alpha.2.dll
+/home/mateus/Documents/Git/Assemble/Project/.mono/temp/obj/Tools/Assemble-v0.1-alpha.2.pdb

@@ -1,7 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Scripts/Main.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Scripts/Player.cs">
     <Files>
-      <File FileName="Scripts/Main.cs" Line="1" Column="1" />
+      <File FileName="Scripts/Main.cs" Line="28" Column="2" />
+      <File FileName="Scripts/Player.cs" Line="208" Column="38" />
+      <File FileName="Scripts/Coin.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -9,7 +11,7 @@
           <Node name="Assemble-v0.1-alpha.2" expanded="True">
             <Node name="Assemble-v0.1-alpha.2" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Main.cs" selected="True" />
+                <Node name="Player.cs" selected="True" />
               </Node>
             </Node>
           </Node>
