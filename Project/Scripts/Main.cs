@@ -17,12 +17,10 @@ public class Main : Node {
 	public static Vector2 playerPos                 = new Vector2();
 	public static float tDelta;
 	public static int score;
-
-
 	public override void _PhysicsProcess(float delta) {
-		
-		// globally available delta time.
-		tDelta = delta;
+
+        // globally available delta time.
+        tDelta = delta;
 		
 	}
 
