@@ -1,177 +1,317 @@
-// PLAYER.CS
+// Player.cs
 
 using Godot;
 using System;
 
+
 public class Player : Node2D {
 
-//	MOVEMENT VARIABLES
-    public static Vector2 motion = new Vector2();	                            // velocity force vector.
-    public static float slippery = 0.08f;			                            // slippery of the floor/air.
-    public static int gravityForce = 180;				                        // self explanatory.
-	public static int jumpForce = -500;				                            // self explanatory.
-	public static int speed;					                                // speed. do not change this value, use baseSpeed or runSpeed instead.
-	public static int baseSpeed = 80;				                            // the base speed of the player.
-	public static int runSpeed = 130;				                            // the run speed of the player.
 
-	public static string keyPressed;					                        // current movement key pressed used in GgetInput().
+    /* ________________________________________________________________________
+     * HEADER.
+     * ! IMPORTANT ! : SET VARIABLES IN _Ready().
+     * ________________________________________________________________________
+     * VARIABLE: DEFINITION
+     *
+     * * NS: Do not SET this value, only get it.
+     * * NYI: Not Yet Implemented.
+     *
+     *
+     * MOVEMENT RELATED
+     * motion               : On MoveA*() by GD Physics to apply a mov. force.
+     * gravityForce         : On _PhysicsProcess() to apply gravity force.
+     * speed                : NS On MoveA*() to handle the current speed.
+     * slippery             : On MoveA*() to slide obj.s on motion stop.
+     *
+     * baseSpeed            : On MoveA*() to set the base, common, speed.
+     * runSpeed             : On MoveA*() to set the run speed.
+     * jumpForce            : On Jump() to set the jumping motion force.
+     * isRunning            : On MoveA*(), bool is it pressing to run?
+     *
+     * CONTROL RELATED
+     * playerStatus         : NYI Handles player state, alive, dead, paused.
+     * currentAnim          : On H.Anim() current animation being displayed.
+     * isBlock              : On H.Anim(), MoveA*(), bool is it a block?
+     * canMove              : On MoveA*(), bool can it move?
+     * ________________________________________________________________________
+    */
 
-//	CONTROL VARIABLES
-    public static string playerStatus = "alive";                                // not yet implemented, will handle the player stati.
-    public static string currentAnim = "idle";
-    public static bool isBlock = false;
-    public static bool canMove = true;
+
+    public static Vector2 motion;
+    public static int gravityForce;
+    public static int speed;
+    public static float slippery;
+
+    public static int baseSpeed;
+    public static int runSpeed;
+    public static int jumpForce;
+    public static bool isRunning;
+
+    public static string keyPressed;
+    public static string playerStatus;
+    public static string currentAnim;
+    public static bool isBlock;
+    public static bool canMove;
 
 
-            
+    // This method is called once when the player is created in the scene.
+    // It defines basic variables related to the player.
 
     public override void _Ready() {
-        Main.playerNode = GetNode<Node2D>("/root/Main/Objects/Player");
-        Main.playerBodyNode = GetNode<KinematicBody2D>("/root/Main/Objects/Player/body");
-        Main.playerSpriteNode = GetNode<AnimatedSprite>("/root/Main/Objects/Player/body/sprite");
+
+
+        Main.playerNode =
+            GetNode<Node2D>
+            ("/root/Main/Objects/Player");
+
+        Main.playerBodyNode =
+            GetNode<KinematicBody2D>
+            ("/root/Main/Objects/Player/body");
+
+        Main.playerSpriteNode =
+            GetNode<AnimatedSprite>
+            ("/root/Main/Objects/Player/body/sprite");
+
+
+        motion = new Vector2();
+        gravityForce = 180;
+        slippery = 0.08f;
+
+        baseSpeed = 80;
+        runSpeed = 130;
+        jumpForce = -500;
+        isRunning = false;
+
+        playerStatus = "alive";
+        currentAnim = "idle";
+        isBlock = false;
+        canMove = true;
+
+
     }
 
+
+    /* ________________________________________________________________________
+     * HEADER.
+     * ________________________________________________________________________
+     * FIXED UPDATE METHOD.
+     *
+     * This method is called every single frame, 60 times per second.
+     * It calls useful methods, to handle movement, animations etc.
+     *
+     *
+     * CommandDebug()       : Debug for variables. Not useful for builds.
+     *
+     * HandleInput()        : Handles all the Input Keys, calling methods.
+     * HandlePhysics()      : Handles movement, physics and jumping.
+     * HandleAnimations()   : Handles animations based on player actions.
+     *
+     * ________________________________________________________________________
+    */
 
 
     public override void _PhysicsProcess(float delta) {
 
-        // debug terminal commands.
-        GD.Print(currentAnim);
-        GD.Print(isBlock);
-        //GD.Print(Main.playerPos);
 
-        // call basic methods.
-        GetInput();                 // handles all the input, including calling methods like Jump() and JumpCut().
-        MoveAndGravity();           // handles all the basic physics. except jumping (on Jump() and JumpCut()).
-        HandleAnim();
+        CommandDebug();
+
+        HandleInput();
+        HandlePhysics();
+        HandleAnimations();
+
+
     }
 
 
-    public void GetInput() {
+    // Debugs variables.
+    // Simply uncomment a line.
 
-        // gets the input from the player and stores it in a variable.
-        if (Input.IsActionPressed("RIGHT") && !Input.IsActionPressed("LEFT")) {
-            if (canMove) { keyPressed = "right"; } else { keyPressed = "nil"; }
-        } else if (Input.IsActionPressed("LEFT") && !Input.IsActionPressed("RIGHT")) {
-            if (canMove) { keyPressed = "left"; } else { keyPressed = "nil"; }
-        } else if (!Input.IsActionPressed("LEFT") && !Input.IsActionPressed("RIGHT")) {
-            keyPressed = "nil";
-        } else {
-            keyPressed = "both";
-        }
+    public void CommandDebug() {
 
-        if (Input.IsActionPressed("RUN")) {
-            speed = runSpeed;
-        } else {
-            speed = baseSpeed;
-        }
 
-        // handles jumping.
-        if (Input.IsActionJustPressed("JUMP") && Main.playerBodyNode.IsOnFloor()) {
-            Jump();
-        }
+        GD.Print(canMove);
+        //GD.Print(motion);
+        //GD.Print(currentAnim);
+        //GD.Print(isBlock);
+        //GD.Print(42);
+        //GD.Print(42);
 
-        if (Input.IsActionJustReleased("JUMP")) {
-            JumpCut();
-        }
-
-        // update Main Script with player's current position.
         Main.playerPos = Main.playerBodyNode.Position;
+
+
     }
 
 
-    public void MoveAndGravity() {
+    // Gets all the Input.
+    // Calls the right methods.
 
-        // moves the character using the physics engine, based on ----
-        // motion, i.e. velocity force applied in a single direction -
-        // and initialize gravity physics. ---------------------------
-        // EDIT: NOW, ONLY IF IT CAN MOVE, PHYSICS WILL BE APPLIED.
+    public void HandleInput() {
 
-        motion = Main.playerBodyNode.MoveAndSlide(motion, Main.UP);
-        motion.y = Mathf.Lerp(motion.y, gravityForce, slippery);
 
-        // switch the keys pressed and modify the motion to be applied.
+        keyPressed =
+            (Input.IsActionPressed("RIGHT")
+            && !Input.IsActionPressed("LEFT"))
+            ? "right" : keyPressed;
+
+        keyPressed =
+            (Input.IsActionPressed("LEFT")
+            && !Input.IsActionPressed("RIGHT"))
+            ? "left" : keyPressed;
+
+        keyPressed =
+            (!Input.IsActionPressed("LEFT")
+            && !Input.IsActionPressed("RIGHT"))
+            ? "nil" : keyPressed;
+
+        keyPressed =
+            (Input.IsActionPressed("LEFT")
+            && Input.IsActionPressed("RIGHT"))
+            ? "both" : keyPressed;
+
+
+        if (Input.IsActionJustPressed("BLOCK")) {
+            currentAnim =
+                (!isBlock)
+                ? "block" : "wake";
+            isBlock = !isBlock;
+        }
+
+
+        if (Input.IsActionJustPressed("JUMP")
+            && Main.playerBodyNode.IsOnFloor()) {
+            DoJump();
+        } else if (Input.IsActionJustReleased("JUMP")) {
+            DoCutJump();
+        }
+
+
+        isRunning =
+            (Input.IsActionPressed("RUN"));
+
+
+    }
+
+
+    // Handles all the momevent.
+    // Handles gravity and physics.
+
+    public void HandlePhysics() {
+
+
+        motion =
+            Main.playerBodyNode.MoveAndSlide(motion, Main.UP);
+
+        motion.y =
+            Mathf.Lerp(motion.y, gravityForce, slippery);
+
+        speed =
+            (isRunning) ? runSpeed : baseSpeed;
+
+        canMove =
+            (currentAnim == "block"
+            || currentAnim == "wake")
+            ? false : true;
+
         switch (keyPressed) {
 
+
             case ("right"):
-                // flips the image.
                 Main.playerSpriteNode.FlipH = false;
-                // changes motion so it moves to the right.
-                motion.x = Mathf.Lerp(motion.x, speed, slippery);
 
-                if (currentAnim != "wake" && currentAnim != "block") {
-                    currentAnim = "walk";
-                }
+                motion.x = (canMove)
+                    ? Mathf.Lerp(motion.x, speed, slippery)
+                    : Mathf.Lerp(motion.x, 0, slippery);
 
+                currentAnim =
+                    (currentAnim != "wake"
+                    && currentAnim != "block")
+                    ? "walk" : currentAnim;
                 break;
 
             case ("left"):
-                // flips the image.
                 Main.playerSpriteNode.FlipH = true;
-                // changes motion so it moves to the left.
-                motion.x = Mathf.Lerp(motion.x, -speed, slippery);
-                if (currentAnim != "wake" && currentAnim != "block") {
-                    currentAnim = "walk";
-                }
 
+                motion.x = (canMove)
+                    ? Mathf.Lerp(motion.x, -speed, slippery)
+                    : Mathf.Lerp(motion.x, 0, slippery);
+
+                currentAnim =
+                    (currentAnim != "wake"
+                    && currentAnim != "block")
+                    ? "walk" : currentAnim;
                 break;
 
-            // case nor right or left key is pressed.
             case ("nil"):
-                // makes it stop, since it has no motion.
                 motion.x = Mathf.Lerp(motion.x, 0, slippery);
-
-                if (currentAnim != "wake" && currentAnim != "block") {
-                    currentAnim = "idle";    
-                }
+                currentAnim =
+                    (currentAnim != "wake"
+                    && currentAnim != "block")
+                    ? "idle" : currentAnim;
                 break;
 
             default:
-                if (currentAnim != "wake" && currentAnim != "block") {
-                    currentAnim = "idle";
-                }
+                motion.x = Mathf.Lerp(motion.x, 0, slippery);
+                currentAnim =
+                    (currentAnim != "wake"
+                    && currentAnim != "block")
+                    ? "idle" : currentAnim;
                 break;
-
         }
 
-        if ((currentAnim == "block") || (currentAnim == "wake")) {
-            canMove = false;
-        } else {
-            canMove = true;
-        }
 
     }
 
 
-    public void Jump() {
+    // Applies jump force.
+    public void DoJump() {
 
-        // if is on floor, apply jump force.
-        if ((Main.playerBodyNode.IsOnFloor()) && (!isBlock) && (currentAnim != "wake")) {
-            motion.y = jumpForce;
-        }
+
+        motion.y =
+            (Main.playerBodyNode.IsOnFloor()
+            && canMove
+            && currentAnim != "wake"
+            && currentAnim != "block")
+            ? jumpForce : motion.y;
+
+
     }
 
 
-    public void JumpCut() {
+    // Cuts the jump in the middle
+    // if the key is released.
 
-	// if motion is big, cut the motion to mere -80.
-        if (motion.y < -80) {
-            motion.y = -80;
-        }
+    public void DoCutJump() {
+
+
+        motion.y =
+            (motion.y < -80)
+            ? -80 : motion.y;
+
+
     }
 
 
-    public void HandleAnim() {
+    // Handles all the animations.
+    // State machine hard coded.
 
-        if ((Main.playerBodyNode.IsOnFloor() == false) 
-            && (currentAnim != "jump")
-            && (currentAnim != "wake")
-            && (currentAnim != "block"))
-            {
-                currentAnim = "jump";
-        }
+    public void HandleAnimations() {
+
+
+        // Jumping animation.
+
+        currentAnim =
+            (!Main.playerBodyNode.IsOnFloor()
+            && currentAnim != "jump"
+            && currentAnim != "wake"
+            && currentAnim != "block")
+            ? "jump" : currentAnim;
+
+
+        // Main animations.
 
         switch (currentAnim) {
+
+
             case "idle":
                 Main.playerSpriteNode.Animation = "idle";
                 break;
@@ -186,14 +326,12 @@ public class Player : Node2D {
 
             case "wake":
                 Main.playerSpriteNode.Animation = "wake";
-                GD.Print("WAKING..............");
+                // if the animation ended.
                 if (Main.playerSpriteNode.Frame >= 5) {
                     Main.playerSpriteNode.Frame = 0;
-                    // animation ended
                     currentAnim = "idle";
                     break;
                 }
-
                 break;
 
             case "block":
@@ -201,21 +339,10 @@ public class Player : Node2D {
                 break;
         }
 
-        if (Input.IsActionJustPressed("BLOCK")) {
-
-            if (!isBlock) {  
-                currentAnim = "block"; 
-                GD.Print("BLOCKFY"); 
-                isBlock = true; 
-            } else { 
-                currentAnim = "wake"; 
-                GD.Print("WAKE"); 
-                isBlock = false; 
-            }
-        
-        
-        }
 
     }
+
+
+
 
 }
