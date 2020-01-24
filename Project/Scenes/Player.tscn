@@ -48,7 +48,7 @@ script = ExtResource( 1 )
 
 [node name="playerShape" type="CollisionPolygon2D" parent="body"]
 visible = false
-polygon = PoolVector2Array( -7.935, -5, -5, -7.9, 5, -7.9, 7.935, -5, 7.935, 6, 5, 8, -5, 8, -7.935, 6 )
+polygon = PoolVector2Array( -7.935, -5, -5, -7.8, 5, -7.8, 7.935, -5, 7.935, 6, 5, 8, -5, 8, -7.935, 6 )
 
 [node name="sprite" type="AnimatedSprite" parent="body"]
 frames = SubResource( 1 )
